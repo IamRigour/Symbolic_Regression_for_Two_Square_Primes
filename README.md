@@ -1,6 +1,6 @@
 # Symbolic Regression for Two Square Primes
 
-This project studies *primes expressible as the sum of two squares*:
+This project studies primes expressible as the sum of two squares:
 
 $$
 p = a^2 + b^2,\quad a,b \in \mathbb{Z}
