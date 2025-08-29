@@ -4,32 +4,27 @@ from math import sqrt, log
 import csv
 import  pyprimesieve
 from time import perf_counter
+import numba
+
 # Define the counting function
 
-from math import sqrt
+@numba.njit
+def pi_2sq(n):
+    prime = np.ones(n+1, dtype=np.bool_)
+    prime[:2] = False  # 0 and 1 not prime
+    p = 2
 
-def pi_2sq(x):
-    step_size = int(sqrt(x))
-    pi_vals = {}
+    while p * p <= n:
+        if prime[p]:
+            for i in range(p * p, n + 1, p):
+                prime[i] = False
+        p += 1
 
-    # Initial block - using primesieve
-    x_0 = step_size
-    primes = pyprimesieve.primes(1, x_0 + 1)
-    pi_vals[x_0] = sum(1 for p in primes if p == 2 or p % 4 == 1)
-
-    i = x_0
-    while i <= x - step_size:
-        new_x = i + step_size
-        # Get primes in the current range
-        primes = pyprimesieve.primes(i + 1, new_x + 1)
-        pi_vals[new_x] = pi_vals[i] + sum(1 for p in primes if p == 2 or p % 4 == 1)
-        i = new_x
-
-    if i < x:
-        primes = pyprimesieve.primes(i + 1, x + 1)
-        pi_vals[x] = pi_vals[i] + sum(1 for p in primes if p == 2 or p % 4 == 1)
-    
-    return pi_vals[x]
+    count = 0
+    for p in range(2, n+1):
+        if prime[p] and (p == 2 or p % 4 == 1):
+            count += 1
+    return count
 
 
 
@@ -50,7 +45,7 @@ def term_two(y):
 def integrand(x):
     return 1 / (np.log(x)**1.5)
 
-def integrate_chunked(a, b, chunks=10_000):
+def integrate_chunked(a, b, chunks=1000):
     points = np.linspace(a, b, chunks+1)
     total = 0
     for i in range(chunks):
@@ -63,20 +58,19 @@ def new_approximation(x):
 
 
 def generate_csv(filename, x_values):
-    print("First")
+  
     with open(filename, mode="w", newline="") as file:
-        print("Second")
         writer = csv.writer(file)
         writer.writerow(["x", "actual", "approx"])
-        # print(f"x_vals: {x_values}")
         for x in x_values:
-            print(f"Third: ", x)
             actual = pi_2sq(x)
-            approx = 0 #new_approximation(x)
+            approx = new_approximation(x) 
             writer.writerow([x, actual, approx])
-            print(f"Actual: {actual}, Approximate: {approx}")
+            
 
+start = perf_counter()
+x_values =  list(range(10**3, 10**8+1, 10**3))
+generate_csv("two-square-primes_and_approx.csv", x_values)
+end = perf_counter()
 
-x_values =  list(range(10**3, 10**8, 10**3))
-
-generate_csv("2sq_and_approx.csv", x_values)
+print(start - end)
