@@ -62,9 +62,9 @@ def generate_csv(filename, x_values):
             approx = new_approximation(x)
             writer.writerow([x, actual, approx])
 
-            # Progress tracking
+            # Single-line progress update
             percent = (idx / total) * 100
-            print(f"Progress: {percent:.2f}% ({idx}/{total})", end="\r")
+            print(f"\rProgress: {percent:.2f}% ({idx}/{total})", end="")
 
     print("\nProcessing complete!")
 
