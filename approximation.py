@@ -69,7 +69,7 @@ def generate_csv(filename, x_values):
     print("\nProcessing complete!")
 
 start = perf_counter()
-x_values = list(range(10**3, 10**8+1, 10**3))
+x_values = list(range(10**3, 10**8+1, 1111))
 generate_csv("two-square-primes_and_approx.csv", x_values)
 end = perf_counter()
 
