@@ -2,12 +2,11 @@ import numpy as np
 from scipy.integrate import quad
 from math import sqrt, log
 import csv
-import  pyprimesieve
+import pyprimesieve
 from time import perf_counter
 import numba
 
 # Define the counting function
-
 @numba.njit
 def pi_2sq(n):
     prime = np.ones(n+1, dtype=np.bool_)
@@ -26,10 +25,7 @@ def pi_2sq(n):
             count += 1
     return count
 
-
-
 # Implement the new approximation
-
 K = 0.76422365358922
 y = 100
 
@@ -56,21 +52,25 @@ def integrate_chunked(a, b, chunks=1000):
 def new_approximation(x):
     return c_val(y) + term_one(x) - term_two(y) + K*integrate_chunked(y, x)
 
-
 def generate_csv(filename, x_values):
-  
+    total = len(x_values)
     with open(filename, mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["x", "actual", "approx"])
-        for x in x_values:
+        for idx, x in enumerate(x_values, start=1):
             actual = pi_2sq(x)
-            approx = new_approximation(x) 
+            approx = new_approximation(x)
             writer.writerow([x, actual, approx])
-            
+
+            # Single-line progress update
+            percent = (idx / total) * 100
+            print(f"\rProgress: {percent:.2f}% ({idx}/{total})", end="")
+
+    print("\nProcessing complete!")
 
 start = perf_counter()
-x_values =  list(range(10**3, 10**8+1, 10**3))
+x_values = list(range(10**3, 10**8+1, 1111))
 generate_csv("two-square-primes_and_approx.csv", x_values)
 end = perf_counter()
 
-print(start - end)
+print(f"Time taken: {end - start:.2f} seconds")

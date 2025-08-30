@@ -36,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: generated-file
-          path: ./2sq_and_approx.csv  
+          path: ./two-square-primes_and_approx.csv
