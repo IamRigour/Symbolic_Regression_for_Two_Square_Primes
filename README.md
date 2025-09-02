@@ -6,12 +6,8 @@ $$
 p = a^2 + b^2,\quad a,b \in \mathbb{Z}
 $$
 
-By Fermat’s theorem, these are exactly the primes $p = 2$ or $p \equiv 1 \ (\bmod\ 4)$.
-
-*Goal:* Use *symbolic regression* to find a closed-form approximation  
-$\pi_{2\text{sq}}(x) \approx f(x)$ for the count of such primes up to $x$,  
-aiming for *better accuracy* than the classical Prime Number Theorem estimate:
-
+Goal:* By Fermat’s theorem, these are exactly the primes $p = 2$ or $p \equiv 1 \ (\bmod\ 4)$.
+Having come up with a 'not-so-good' approximation for $\pi_{2\text{sq}}(x)$, we seek to use symbolic regression to make this approximation better than it is, although it may not be better than $\frac{x}{2\log x}$.
 $$
 \pi_{2\text{sq}}(x) \sim \frac{x}{2 \ln x}.
 $$
