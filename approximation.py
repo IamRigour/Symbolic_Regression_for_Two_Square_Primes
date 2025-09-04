@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.integrate import quad
 from math import sqrt, log
 import csv
 
